@@ -1,7 +1,8 @@
 "use client";
 
-import type { RouterOutputs } from "@scottylabs/api";
 import { use } from "react";
+
+import type { RouterOutputs } from "@scottylabs/api";
 import { cn } from "@scottylabs/ui";
 import { Button } from "@scottylabs/ui/button";
 import {

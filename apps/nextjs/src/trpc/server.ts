@@ -1,7 +1,8 @@
 import { cache } from "react";
 import { headers } from "next/headers";
-import { createCaller, createTRPCContext } from "@scottylabs/api";
 import { auth } from "@clerk/nextjs";
+
+import { createCaller, createTRPCContext } from "@scottylabs/api";
 
 /**
  * This wraps the `createTRPCContext` helper and provides the required context for the tRPC API when

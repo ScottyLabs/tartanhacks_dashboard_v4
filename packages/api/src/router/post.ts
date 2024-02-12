@@ -1,6 +1,7 @@
+import { z } from "zod";
+
 import { desc, eq, schema } from "@scottylabs/db";
 import { CreatePostSchema } from "@scottylabs/validators";
-import { z } from "zod";
 
 import { createTRPCRouter, protectedProcedure, publicProcedure } from "../trpc";
 

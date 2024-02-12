@@ -6,4 +6,6 @@ import { pgTableCreator } from "drizzle-orm/pg-core";
  *
  * @see https://orm.drizzle.team/docs/goodies#multi-project-schema
  */
-export const pgTable = pgTableCreator((name) => `tartanhacks_dashboard_${name}`);
+export const pgTable = pgTableCreator(
+  (name) => `tartanhacks_dashboard_${name}`,
+);
