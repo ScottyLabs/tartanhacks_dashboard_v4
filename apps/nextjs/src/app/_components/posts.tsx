@@ -1,10 +1,9 @@
 "use client";
 
+import type { RouterOutputs } from "@scottylabs/api";
 import { use } from "react";
-
-import type { RouterOutputs } from "@acme/api";
-import { cn } from "@acme/ui";
-import { Button } from "@acme/ui/button";
+import { cn } from "@scottylabs/ui";
+import { Button } from "@scottylabs/ui/button";
 import {
   Form,
   FormControl,
@@ -12,10 +11,10 @@ import {
   FormItem,
   FormMessage,
   useForm,
-} from "@acme/ui/form";
-import { Input } from "@acme/ui/input";
-import { toast } from "@acme/ui/toast";
-import { CreatePostSchema } from "@acme/validators";
+} from "@scottylabs/ui/form";
+import { Input } from "@scottylabs/ui/input";
+import { toast } from "@scottylabs/ui/toast";
+import { CreatePostSchema } from "@scottylabs/validators";
 
 import { api } from "~/trpc/react";
 

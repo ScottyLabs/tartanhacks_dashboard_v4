@@ -4,7 +4,6 @@ const jiti = _jiti(new URL(import.meta.url).pathname);
 
 // Import env files to validate at build time. Use jiti so we can load .ts files in here.
 jiti("./src/env");
-jiti("@acme/auth/env");
 
 /** @type {import("next").NextConfig} */
 const config = {
@@ -12,11 +11,10 @@ const config = {
 
   /** Enables hot reloading for local packages without a build step */
   transpilePackages: [
-    "@acme/api",
-    "@acme/auth",
-    "@acme/db",
-    "@acme/ui",
-    "@acme/validators",
+    "@scottylabs/api",
+    "@scottylabs/db",
+    "@scottylabs/ui",
+    "@scottylabs/validators",
   ],
 
   /** We already do linting and typechecking as separate tasks in CI */

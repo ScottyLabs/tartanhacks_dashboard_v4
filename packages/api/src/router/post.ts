@@ -1,7 +1,6 @@
+import { desc, eq, schema } from "@scottylabs/db";
+import { CreatePostSchema } from "@scottylabs/validators";
 import { z } from "zod";
-
-import { desc, eq, schema } from "@acme/db";
-import { CreatePostSchema } from "@acme/validators";
 
 import { createTRPCRouter, protectedProcedure, publicProcedure } from "../trpc";
 

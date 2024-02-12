@@ -1,5 +1,5 @@
 {
-  "name": "@acme/ui",
+  "name": "@scottylabs/ui",
   "private": true,
   "version": "0.1.0",
   "type": "module",
@@ -34,10 +34,10 @@
     "tailwindcss-animate": "^1.0.7"
   },
   "devDependencies": {
-    "@acme/eslint-config": "workspace:^0.2.0",
-    "@acme/prettier-config": "workspace:^0.1.0",
-    "@acme/tailwind-config": "workspace:^0.1.0",
-    "@acme/tsconfig": "workspace:^0.1.0",
+    "@scottylabs/eslint-config": "workspace:^0.2.0",
+    "@scottylabs/prettier-config": "workspace:^0.1.0",
+    "@scottylabs/tailwind-config": "workspace:^0.1.0",
+    "@scottylabs/tsconfig": "workspace:^0.1.0",
     "@types/react": "^18.2.55",
     "eslint": "^8.56.0",
     "prettier": "^3.2.5",
@@ -52,9 +52,9 @@
   },
   "eslintConfig": {
     "extends": [
-      "@acme/eslint-config/base",
-      "@acme/eslint-config/react"
+      "@scottylabs/eslint-config/base",
+      "@scottylabs/eslint-config/react"
     ]
   },
-  "prettier": "@acme/prettier-config"
+  "prettier": "@scottylabs/prettier-config"
 }
