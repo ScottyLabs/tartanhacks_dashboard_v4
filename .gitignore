@@ -23,6 +23,17 @@ dist/
 expo-env.d.ts
 apps/expo/.gitignore
 
+# backend
+db/ 
+build/
+.DS_Store
+.python-version
+*.Identifier
+credentials.json
+token.json
+.nyc_output/
+.tool-versions
+
 # production
 build
 
