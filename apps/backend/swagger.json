@@ -1,0 +1,3936 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "TartanHacks Backend",
+    "version": "0.0.1"
+  },
+  "basePath": "/",
+  "components": {
+    "securitySchemes": {
+      "apiKeyAuth": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "x-access-token"
+      }
+    }
+  },
+  "paths": {
+    "/admin/{id}": {
+      "post": {
+        "summary": "Make a user an admin",
+        "tags": ["Admin Module"],
+        "description": "Make a user into an admin. Access - Admin only",
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "ID of the user to make into an admin"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success."
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "403": {
+            "description": "Unauthorized."
+          },
+          "404": {
+            "description": "User does not exist."
+          },
+          "500": {
+            "description": "Internal Server Error."
+          }
+        }
+      }
+    },
+    "/admin/remove/{id}": {
+      "post": {
+        "summary": "Demote an admin",
+        "tags": ["Admin Module"],
+        "description": "Demote an existing admin. Access - Admin only",
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "ID of the admin user to demote"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success."
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "403": {
+            "description": "Unauthorized."
+          },
+          "404": {
+            "description": "User does not exist."
+          },
+          "500": {
+            "description": "Internal Server Error."
+          }
+        }
+      }
+    },
+    "/analytics/": {
+      "get": {
+        "summary": "Get Analytics",
+        "tags": ["Analytics Module"],
+        "description": "Compute and get analytics. Access - Admin only.",
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success."
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "403": {
+            "description": "Unauthorized."
+          },
+          "500": {
+            "description": "Internal Server Error."
+          }
+        }
+      }
+    },
+    "/auth/register": {
+      "post": {
+        "summary": "Register user",
+        "tags": ["Authentication Module"],
+        "description": "Creates new user account. This sends a verification email to the user containing a link to verify their account. The base URL used in this verification link is from the request's `Origin` header. Access - Open\n",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "format": "email"
+                  },
+                  "password": {
+                    "type": "string",
+                    "format": "password"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success."
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "403": {
+            "description": "Unauthorized."
+          },
+          "500": {
+            "description": "Internal Server Error."
+          }
+        }
+      }
+    },
+    "/auth/login": {
+      "post": {
+        "summary": "Login user",
+        "tags": ["Authentication Module"],
+        "description": "Verifies user credentials. Either the login credentials can be specified in the request body, or an access token can be specified in the header.. Access - Open\n",
+        "requestBody": {
+          "required": false,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "format": "email"
+                  },
+                  "password": {
+                    "type": "string",
+                    "format": "password"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "in": "header",
+            "name": "x-access-token",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success."
+          },
+          "403": {
+            "description": "Unauthorized."
+          },
+          "404": {
+            "description": "User does not exist."
+          },
+          "500": {
+            "description": "Internal Server Error."
+          }
+        }
+      }
+    },
+    "/auth/verify/{token}": {
+      "get": {
+        "summary": "Verify a user by their token",
+        "tags": ["Authentication Module"],
+        "description": "Verifies a user. Access - Open",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "token",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "Email verification token of a user"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success."
+          },
+          "404": {
+            "description": "User does not exist."
+          },
+          "500": {
+            "description": "Internal Server Error."
+          }
+        }
+      }
+    },
+    "/auth/verify/resend": {
+      "post": {
+        "summary": "Resend a user verification email",
+        "tags": ["Authentication Module"],
+        "description": "Resend a user verification email. This sends a verification email to the user containing a link to verify their account. The base URL used in this verification link is from the request's `Origin` header. Access - Open\n",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "format": "email"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success."
+          },
+          "404": {
+            "description": "User does not exist."
+          },
+          "500": {
+            "description": "Internal Server Error."
+          }
+        }
+      }
+    },
+    "/auth/request-reset": {
+      "post": {
+        "summary": "Send a password reset email to a user",
+        "tags": ["Authentication Module"],
+        "description": "Send a password reset email to a user. This sends an email to the user containing a link to reset their password. The base URL used in this reset link is from the request's `Origin` header. Access - Open\n",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "format": "email"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success."
+          },
+          "403": {
+            "description": "Unauthorized."
+          },
+          "404": {
+            "description": "User does not exist."
+          },
+          "500": {
+            "description": "Internal Server Error."
+          }
+        }
+      }
+    },
+    "/auth/reset/password": {
+      "post": {
+        "summary": "Reset a user's password",
+        "tags": ["Authentication Module"],
+        "description": "Reset a user's password Access - Open",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "token": {
+                    "type": "string"
+                  },
+                  "password": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success."
+          },
+          "403": {
+            "description": "Unauthorized."
+          },
+          "404": {
+            "description": "User does not exist."
+          },
+          "500": {
+            "description": "Internal Server Error."
+          }
+        }
+      }
+    },
+    "/auth/discord/verify": {
+      "post": {
+        "summary": "Get a user and their team using a verification code",
+        "tags": ["Authentication Module"],
+        "description": "Get a user and their team using a verification code. Access - Open",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "code": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success."
+          },
+          "404": {
+            "description": "Verification code invalid."
+          },
+          "500": {
+            "description": "Internal Server Error."
+          }
+        }
+      }
+    },
+    "/bookmark": {
+      "post": {
+        "summary": "Create a new bookmark",
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ],
+        "tags": ["Bookmark Module"],
+        "description": "Create a new bookmark for a user.\n\n`type` should be either \"PARTICIPANT\" or \"PROJECT\"\n\nif `PARTICIPANT`, then the `participant` field is required and should specify a user ID.\n\nif `PROJECT`, then the `project` field is required and should specify a project ID.\n\n`description` is an optional field for personal notes\n",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "bookmarkType": {
+                    "type": "string",
+                    "enum": ["PARTICIPANT", "PROJECT"],
+                    "required": true
+                  },
+                  "participant": {
+                    "type": "string"
+                  },
+                  "project": {
+                    "type": "string"
+                  },
+                  "description": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success."
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "403": {
+            "description": "Unauthorized."
+          },
+          "500": {
+            "description": "Internal Server Error."
+          }
+        }
+      }
+    },
+    "/bookmark/{id}": {
+      "get": {
+        "summary": "Get a bookmark by its ID",
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ],
+        "tags": ["Bookmark Module"],
+        "description": "Get a bookmark by its ID\n",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Bookmark ID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success."
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "403": {
+            "description": "Unauthorized."
+          },
+          "404": {
+            "description": "Bookmark not found"
+          },
+          "500": {
+            "description": "Internal Server Error."
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete a bookmark by its ID",
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ],
+        "tags": ["Bookmark Module"],
+        "description": "Delete a bookmark by its ID\n",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Bookmark ID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success."
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "403": {
+            "description": "Unauthorized."
+          },
+          "404": {
+            "description": "Bookmark not found"
+          },
+          "500": {
+            "description": "Internal Server Error."
+          }
+        }
+      }
+    },
+    "/bookmarks/participant": {
+      "get": {
+        "summary": "Get all participant bookmarks of this user",
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ],
+        "tags": ["Bookmark Module"],
+        "description": "Get all participant bookmarks of this user. Access - User.",
+        "responses": {
+          "200": {
+            "description": "Success."
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "403": {
+            "description": "Unauthorized."
+          },
+          "500": {
+            "description": "Internal Server Error."
+          }
+        }
+      }
+    },
+    "/bookmarks/project": {
+      "get": {
+        "summary": "Get all project bookmarks of this user",
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ],
+        "tags": ["Bookmark Module"],
+        "description": "Get all project bookmarks of this user. Access - User.",
+        "responses": {
+          "200": {
+            "description": "Success."
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "403": {
+            "description": "Unauthorized."
+          },
+          "500": {
+            "description": "Internal Server Error."
+          }
+        }
+      }
+    },
+    "/check-in/history/{id}": {
+      "get": {
+        "summary": "Get Check In history by user ID",
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ],
+        "tags": ["Check In Module"],
+        "description": "Get a user's check in history. Access - Admin or User(Own).",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "User ID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success."
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "403": {
+            "description": "Unauthorized."
+          },
+          "500": {
+            "description": "Internal Server Error."
+          }
+        }
+      }
+    },
+    "/check-in": {
+      "post": {
+        "summary": "Add new Check In item",
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ],
+        "tags": ["Check In Module"],
+        "description": "Creates new Check in Item. Access - Admin.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "description": {
+                    "type": "string"
+                  },
+                  "startTime": {
+                    "type": "number"
+                  },
+                  "endTime": {
+                    "type": "number"
+                  },
+                  "points": {
+                    "type": "number"
+                  },
+                  "accessLevel": {
+                    "type": "string"
+                  },
+                  "enableSelfCheckIn": {
+                    "type": "boolean"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success."
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "403": {
+            "description": "Unauthorized."
+          },
+          "500": {
+            "description": "Internal Server Error."
+          }
+        }
+      }
+    },
+    "/check-in/{id}": {
+      "patch": {
+        "summary": "Edit check in item",
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ],
+        "tags": ["Check In Module"],
+        "description": "Edit existing check in item information. All body parameters are optional. If unspecified, the parameters are not updated. Access - Admin.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "Check In Item ID"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "description": {
+                    "type": "string"
+                  },
+                  "startTime": {
+                    "type": "number"
+                  },
+                  "endTime": {
+                    "type": "number"
+                  },
+                  "points": {
+                    "type": "number"
+                  },
+                  "accessLevel": {
+                    "type": "string"
+                  },
+                  "enableSelfCheckIn": {
+                    "type": "boolean"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success."
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "403": {
+            "description": "Unauthorized."
+          },
+          "500": {
+            "description": "Internal Server Error."
+          }
+        }
+      },
+      "get": {
+        "summary": "Get Check In item by ID",
+        "tags": ["Check In Module"],
+        "description": "Get a single Check In item by iD. Access - Public.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "Check In Item ID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success."
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "403": {
+            "description": "Unauthorized."
+          },
+          "500": {
+            "description": "Internal Server Error."
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete Check In item by ID",
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ],
+        "tags": ["Check In Module"],
+        "description": "Delete Check In item by specifying ID. Access - Admin.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "Check In Item ID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success."
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "403": {
+            "description": "Unauthorized."
+          },
+          "500": {
+            "description": "Internal Server Error."
+          }
+        }
+      }
+    },
+    "/check-in/": {
+      "get": {
+        "summary": "Get Check In items",
+        "tags": ["Check In Module"],
+        "description": "Get all check in items. Access - Public.",
+        "responses": {
+          "200": {
+            "description": "Success."
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "403": {
+            "description": "Unauthorized."
+          },
+          "500": {
+            "description": "Internal Server Error."
+          }
+        }
+      }
+    },
+    "/check-in/user": {
+      "put": {
+        "summary": "Check a User In",
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ],
+        "tags": ["Check In Module"],
+        "description": "Checks in a user to a check in item. Access - Admin Users can check in any user for any check in item. Participants can only check themselves in for check-in items that have self check-in enabled.",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "userID",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "checkInItemID",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success."
+          },
+          "400": {
+            "description": "Bad Request."
+          },
+          "404": {
+            "description": "check in item or user not found."
+          },
+          "500": {
+            "description": "Internal Server Error."
+          }
+        }
+      }
+    },
+    "/check-in/recalculate": {
+      "put": {
+        "summary": "Recalculate user points",
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ],
+        "tags": ["Check In Module"],
+        "description": "Recalculate user points. Access - Admin",
+        "responses": {
+          "200": {
+            "description": "Success."
+          },
+          "400": {
+            "description": "Bad Request."
+          },
+          "404": {
+            "description": "check in item or user not found."
+          },
+          "500": {
+            "description": "Internal Server Error."
+          }
+        }
+      }
+    },
+    "/judge": {
+      "post": {
+        "summary": "Create many judges from a list of emails",
+        "tags": ["Judge Module"],
+        "description": "Make a list of users (emails) into judges. Access - Admin only",
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ],
+        "requestBody": {
+          "200": {
+            "description": "Success."
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "403": {
+            "description": "Unauthorized."
+          },
+          "404": {
+            "description": "User does not exist."
+          },
+          "500": {
+            "description": "Internal Server Error."
+          },
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/leaderboard": {
+      "get": {
+        "summary": "Get the leaderboard",
+        "tags": ["Leaderboard Module"],
+        "description": "Get the leader board. Access - Public.",
+        "responses": {
+          "200": {
+            "description": "Success."
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "403": {
+            "description": "Unauthorized."
+          },
+          "500": {
+            "description": "Internal Server Error."
+          }
+        }
+      }
+    },
+    "/leaderboard/rank": {
+      "get": {
+        "summary": "Get the current user's rank on the leaderboard",
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ],
+        "tags": ["Leaderboard Module"],
+        "description": "Get the current user's rank on the leaderboard. Access - User.",
+        "responses": {
+          "200": {
+            "description": "Success."
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "403": {
+            "description": "Unauthorized."
+          },
+          "500": {
+            "description": "Internal Server Error."
+          }
+        }
+      }
+    },
+    "/participants": {
+      "get": {
+        "summary": "Search for participants or return the list of all participants",
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ],
+        "tags": ["Participants Module"],
+        "description": "Retrieves list of participants in the database. Access - Recruiter or Admin",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "name",
+            "schema": {
+              "type": "string"
+            },
+            "description": "The name of a participant to search for."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success."
+          },
+          "403": {
+            "description": "Forbidden."
+          },
+          "500": {
+            "description": "Internal Server Error."
+          }
+        }
+      }
+    },
+    "/participants/verified": {
+      "get": {
+        "summary": "Get emails of verified participants that have not yet submitted their applications",
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ],
+        "tags": ["Participants Module"],
+        "description": "Retrieves list of emails of participants who are verified but have not yet submitted their applications. Access - Recruiter or Admin",
+        "responses": {
+          "200": {
+            "description": "Success."
+          },
+          "403": {
+            "description": "Forbidden."
+          },
+          "500": {
+            "description": "Internal Server Error."
+          }
+        }
+      }
+    },
+    "/participants/admitted": {
+      "get": {
+        "summary": "Get emails of admitted participants that have not yet confirmed",
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ],
+        "tags": ["Participants Module"],
+        "description": "Retrieves list of emails of participants that have been admitted but not yet confirmed. Access - Recruiter or Admin",
+        "responses": {
+          "200": {
+            "description": "Success."
+          },
+          "403": {
+            "description": "Forbidden."
+          },
+          "500": {
+            "description": "Internal Server Error."
+          }
+        }
+      }
+    },
+    "/participants/confirmed": {
+      "get": {
+        "summary": "Get emails of confirmed participants",
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ],
+        "tags": ["Participants Module"],
+        "description": "Retrieves list of emails of confirmed participants. Access - Recruiter or Admin",
+        "responses": {
+          "200": {
+            "description": "Success."
+          },
+          "403": {
+            "description": "Forbidden."
+          },
+          "500": {
+            "description": "Internal Server Error."
+          }
+        }
+      }
+    },
+    "/prizes": {
+      "post": {
+        "summary": "Create new prize",
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ],
+        "tags": ["Prizes Module"],
+        "description": "Creates new prize. Access - Admin.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "description": {
+                    "type": "string"
+                  },
+                  "eligibility": {
+                    "type": "string"
+                  },
+                  "sponsorName": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success."
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "403": {
+            "description": "Unauthorized."
+          },
+          "500": {
+            "description": "Internal Server Error."
+          }
+        }
+      },
+      "get": {
+        "summary": "Get Prizes",
+        "tags": ["Prizes Module"],
+        "description": "Get all Prizes. Access - Public.",
+        "responses": {
+          "200": {
+            "description": "Success."
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "403": {
+            "description": "Unauthorized."
+          },
+          "500": {
+            "description": "Internal Server Error."
+          }
+        }
+      }
+    },
+    "/prizes/{id}": {
+      "patch": {
+        "summary": "Edit prize info",
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ],
+        "tags": ["Prizes Module"],
+        "description": "Edit existing prize information. All body parameters are optional. If unspecified, the parameters are not updated. Access - Admin.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "Prize ID"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "description": {
+                    "type": "string"
+                  },
+                  "eligibility": {
+                    "type": "string"
+                  },
+                  "provider": {
+                    "type": "string"
+                  },
+                  "winner": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success."
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "403": {
+            "description": "Unauthorized."
+          },
+          "500": {
+            "description": "Internal Server Error."
+          }
+        }
+      },
+      "get": {
+        "summary": "Get Prize by ID",
+        "tags": ["Prizes Module"],
+        "description": "Get a single prize by iD. Access - Public.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "Prize ID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success."
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "403": {
+            "description": "Unauthorized."
+          },
+          "500": {
+            "description": "Internal Server Error."
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete prize by ID",
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ],
+        "tags": ["Prizes Module"],
+        "description": "Delete prize by specifying ID. Access - Admin.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "Prize ID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success."
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "403": {
+            "description": "Unauthorized."
+          },
+          "500": {
+            "description": "Internal Server Error."
+          }
+        }
+      }
+    },
+    "/projects/prizes/enter/{id}": {
+      "put": {
+        "summary": "Enter a project for a prize",
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ],
+        "tags": ["Projects Module"],
+        "description": "Enters project for a prize. Access - User(Own)/Admin.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Project ID"
+          },
+          {
+            "in": "query",
+            "name": "prizeID",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success."
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "403": {
+            "description": "Unauthorized."
+          },
+          "500": {
+            "description": "Internal Server Error."
+          }
+        }
+      }
+    },
+    "/projects": {
+      "post": {
+        "summary": "Create new project",
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ],
+        "tags": ["Projects Module"],
+        "description": "Creates new project. Access - Authenticated Users.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "description": {
+                    "type": "string"
+                  },
+                  "team": {
+                    "type": "string"
+                  },
+                  "slides": {
+                    "type": "string"
+                  },
+                  "video": {
+                    "type": "string"
+                  },
+                  "url": {
+                    "type": "string"
+                  },
+                  "presentingVirtually": {
+                    "type": "boolean"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success."
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "403": {
+            "description": "Unauthorized."
+          },
+          "500": {
+            "description": "Internal Server Error."
+          }
+        }
+      },
+      "get": {
+        "summary": "Get Projects",
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ],
+        "tags": ["Projects Module"],
+        "description": "Get all Projects. Access - Admin.",
+        "responses": {
+          "200": {
+            "description": "Success."
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "403": {
+            "description": "Unauthorized."
+          },
+          "500": {
+            "description": "Internal Server Error."
+          }
+        }
+      }
+    },
+    "/projects/{id}": {
+      "patch": {
+        "summary": "Edit project info",
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ],
+        "tags": ["Projects Module"],
+        "description": "Edit existing project information. All body parameters are optional. If unspecified, the parameters are not updated. Access - User(own)/Admin.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "Project ID"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "description": {
+                    "type": "string"
+                  },
+                  "slides": {
+                    "type": "string"
+                  },
+                  "video": {
+                    "type": "string"
+                  },
+                  "url": {
+                    "type": "string"
+                  },
+                  "presentingVirtually": {
+                    "type": "boolean"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success."
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "403": {
+            "description": "Unauthorized."
+          },
+          "500": {
+            "description": "Internal Server Error."
+          }
+        }
+      },
+      "get": {
+        "summary": "Get Project by ID",
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ],
+        "tags": ["Projects Module"],
+        "description": "Get a single project by iD. Access - User(own)/Admin.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "Project ID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success."
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "403": {
+            "description": "Unauthorized."
+          },
+          "500": {
+            "description": "Internal Server Error."
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete project by ID",
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ],
+        "tags": ["Projects Module"],
+        "description": "Delete project by specifying ID. Access - User(Own)/Admin.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "Project ID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success."
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "403": {
+            "description": "Unauthorized."
+          },
+          "500": {
+            "description": "Internal Server Error."
+          }
+        }
+      }
+    },
+    "/recruiter": {
+      "post": {
+        "summary": "Create a new recruiter",
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ],
+        "tags": ["Recruiter Module"],
+        "description": "Create a new recruiter user. Access - Admin.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "sponsorId": {
+                    "type": "string"
+                  },
+                  "email": {
+                    "type": "string"
+                  },
+                  "firstName": {
+                    "type": "string"
+                  },
+                  "lastName": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success."
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "403": {
+            "description": "Unauthorized."
+          },
+          "500": {
+            "description": "Internal Server Error."
+          }
+        }
+      }
+    },
+    "/recruiter/{id}": {
+      "put": {
+        "summary": "Make an existing user into a recruiter for a sponsor",
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ],
+        "tags": ["Recruiter Module"],
+        "description": "Make an existing user into a recruiter. Access - Admin.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "sponsor": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success."
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "403": {
+            "description": "Unauthorized."
+          },
+          "500": {
+            "description": "Internal Server Error."
+          }
+        }
+      },
+      "delete": {
+        "summary": "Demote an existing recruiter",
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ],
+        "tags": ["Recruiter Module"],
+        "description": "Demote an existing recruiter. Access - Admin.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success."
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "403": {
+            "description": "Unauthorized."
+          },
+          "500": {
+            "description": "Internal Server Error."
+          }
+        }
+      }
+    },
+    "/requests/team": {
+      "get": {
+        "summary": "View incoming and outgoing requests for the current user's team",
+        "tags": ["Team Requests Module"],
+        "description": "View incoming and outgoing requests for the current user's team. Access - User",
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success."
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "403": {
+            "description": "Unauthorized."
+          },
+          "500": {
+            "description": "Internal Server Error."
+          }
+        }
+      }
+    },
+    "/requests/team/{teamId}": {
+      "get": {
+        "summary": "View incoming and outgoing requests for a team",
+        "tags": ["Team Requests Module"],
+        "description": "View incoming and outgoing requests for a team. Access - Team Admin, Admin",
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "teamId",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success."
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "403": {
+            "description": "Unauthorized."
+          },
+          "500": {
+            "description": "Internal Server Error."
+          }
+        }
+      }
+    },
+    "/requests/user": {
+      "get": {
+        "summary": "View incoming and outgoing requests for the current user",
+        "tags": ["Team Requests Module"],
+        "description": "View incoming and outgoing requests for the current user. Access - User",
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success."
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "403": {
+            "description": "Unauthorized."
+          },
+          "500": {
+            "description": "Internal Server Error."
+          }
+        }
+      }
+    },
+    "/requests/user/{userId}": {
+      "get": {
+        "summary": "View incoming and outgoing requests for a user",
+        "tags": ["Team Requests Module"],
+        "description": "View incoming and outgoing requests for a user. Access - Owner, Admin",
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "userId",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success."
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "403": {
+            "description": "Unauthorized."
+          },
+          "500": {
+            "description": "Internal Server Error."
+          }
+        }
+      }
+    },
+    "/requests/open/{requestId}": {
+      "patch": {
+        "summary": "Open a team request, marking it as seen",
+        "tags": ["Team Requests Module"],
+        "description": "Opens a team request, marking it as seen.\nIf JOIN request, can only be accessed by team admin.\nIf INVITE request, can only be accessed by owner. Access - User\n",
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "requestId",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success."
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "403": {
+            "description": "Unauthorized."
+          },
+          "500": {
+            "description": "Internal Server Error."
+          }
+        }
+      }
+    },
+    "/requests/accept/{requestId}": {
+      "post": {
+        "summary": "Accept a team request",
+        "tags": ["Team Requests Module"],
+        "description": "Accept a team request.\nIf JOIN request, can only be accessed by team admin.\nIf INVITE request, can only be accessed by owner. Access - User\n",
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "requestId",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success."
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "403": {
+            "description": "Unauthorized."
+          },
+          "500": {
+            "description": "Internal Server Error."
+          }
+        }
+      }
+    },
+    "/requests/decline/{requestId}": {
+      "post": {
+        "summary": "Decline a team request",
+        "tags": ["Team Requests Module"],
+        "description": "Decline a team request.\nIf JOIN request, can only be accessed by team admin.\nIf INVITE request, can only be accessed by owner. Access - User\n",
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "requestId",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success."
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "403": {
+            "description": "Unauthorized."
+          },
+          "500": {
+            "description": "Internal Server Error."
+          }
+        }
+      }
+    },
+    "/requests/cancel/{requestId}": {
+      "post": {
+        "summary": "Cancel a team request",
+        "tags": ["Team Requests Module"],
+        "description": "Cancel a team request.\nIf INVITE request, can only be accessed by team admin.\nIf JOIN request, can only be accessed by owner. Access - User\n",
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "requestId",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success."
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "403": {
+            "description": "Unauthorized."
+          },
+          "500": {
+            "description": "Internal Server Error."
+          }
+        }
+      }
+    },
+    "/schedule": {
+      "post": {
+        "summary": "Add new schedule item",
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ],
+        "tags": ["Schedule Module"],
+        "description": "Creates new schedule item. Access - Admin.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "description": {
+                    "type": "string"
+                  },
+                  "startTime": {
+                    "type": "number"
+                  },
+                  "endTime": {
+                    "type": "number"
+                  },
+                  "location": {
+                    "type": "string"
+                  },
+                  "lat": {
+                    "type": "number"
+                  },
+                  "lng": {
+                    "type": "number"
+                  },
+                  "platform": {
+                    "type": "string",
+                    "enum": [
+                      "IN_PERSON",
+                      "ZOOM",
+                      "HOPIN",
+                      "DISCORD",
+                      "YOUTUBE",
+                      "OTHER"
+                    ]
+                  },
+                  "platformUrl": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success."
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "403": {
+            "description": "Unauthorized."
+          },
+          "500": {
+            "description": "Internal Server Error."
+          }
+        }
+      }
+    },
+    "/schedule/{id}": {
+      "patch": {
+        "summary": "Edit schedule item",
+        "tags": ["Schedule Module"],
+        "description": "Edit existing schedule item information. All body parameters are optional. If unspecified, the parameters are not updated. Access - Admin.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "Schedule Item ID"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "description": {
+                    "type": "string"
+                  },
+                  "startTime": {
+                    "type": "number"
+                  },
+                  "endTime": {
+                    "type": "number"
+                  },
+                  "location": {
+                    "type": "string"
+                  },
+                  "lat": {
+                    "type": "number"
+                  },
+                  "lng": {
+                    "type": "number"
+                  },
+                  "platform": {
+                    "type": "string"
+                  },
+                  "platformUrl": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success."
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "403": {
+            "description": "Unauthorized."
+          },
+          "500": {
+            "description": "Internal Server Error."
+          }
+        }
+      },
+      "get": {
+        "summary": "Get Schedule item by ID",
+        "tags": ["Schedule Module"],
+        "description": "Get a single schedule item by iD. Access - Public.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "Schedule Item ID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success."
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "403": {
+            "description": "Unauthorized."
+          },
+          "500": {
+            "description": "Internal Server Error."
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete Schedule item by ID",
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ],
+        "tags": ["Schedule Module"],
+        "description": "Delete schedule item by specifying ID. Access - Admin.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "Schedule Item ID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success."
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "403": {
+            "description": "Unauthorized."
+          },
+          "500": {
+            "description": "Internal Server Error."
+          }
+        }
+      }
+    },
+    "/schedule/": {
+      "get": {
+        "summary": "Get Schedule items",
+        "tags": ["Schedule Module"],
+        "description": "Get all schedule items. Access - Public.",
+        "responses": {
+          "200": {
+            "description": "Success."
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "403": {
+            "description": "Unauthorized."
+          },
+          "500": {
+            "description": "Internal Server Error."
+          }
+        }
+      }
+    },
+    "/settings": {
+      "get": {
+        "summary": "Get the settings object",
+        "tags": ["Settings Module"],
+        "description": "Get the settings object. Access - Admin only",
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success."
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "403": {
+            "description": "Unauthorized."
+          },
+          "404": {
+            "description": "User does not exist."
+          },
+          "500": {
+            "description": "Internal Server Error."
+          }
+        }
+      },
+      "put": {
+        "summary": "Update the settings",
+        "tags": ["Settings Module"],
+        "description": "Update the settings. Access - Admin only",
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "timeOpen": {
+                    "type": "string",
+                    "format": "date-time"
+                  },
+                  "timeClose": {
+                    "type": "string",
+                    "format": "date-time"
+                  },
+                  "timeConfirm": {
+                    "type": "string",
+                    "format": "date-time"
+                  },
+                  "enableWhitelist": {
+                    "type": "boolean"
+                  },
+                  "whitelistedEmails": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "waitlistText": {
+                    "type": "string"
+                  },
+                  "acceptanceText": {
+                    "type": "string"
+                  },
+                  "confirmationText": {
+                    "type": "string"
+                  },
+                  "allowMinors": {
+                    "type": "boolean"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success."
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "403": {
+            "description": "Unauthorized."
+          },
+          "500": {
+            "description": "Internal Server Error."
+          }
+        }
+      }
+    },
+    "/settings/time/open": {
+      "get": {
+        "summary": "Get the time when registration opens",
+        "tags": ["Settings Module"],
+        "description": "Get the time when registration opens. Access - Public",
+        "responses": {
+          "200": {
+            "description": "Success."
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "404": {
+            "description": "Registration open time is disabled or not set."
+          },
+          "500": {
+            "description": "Internal Server Error."
+          }
+        }
+      }
+    },
+    "/settings/time/close": {
+      "get": {
+        "summary": "Get the time when registration closes",
+        "tags": ["Settings Module"],
+        "description": "Get the time when registration closes. Access - Public",
+        "responses": {
+          "200": {
+            "description": "Success."
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "404": {
+            "description": "Registration close time is disabled or not set."
+          },
+          "500": {
+            "description": "Internal Server Error."
+          }
+        }
+      }
+    },
+    "/settings/time/confirm": {
+      "get": {
+        "summary": "Get the confirmation deadline",
+        "tags": ["Settings Module"],
+        "description": "Get the confirmation deadline. Access - Public",
+        "responses": {
+          "200": {
+            "description": "Success."
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "404": {
+            "description": "Confirmation deadline is disabled or not set."
+          },
+          "500": {
+            "description": "Internal Server Error."
+          }
+        }
+      }
+    },
+    "/sponsor/": {
+      "post": {
+        "summary": "Create a new sponsor (company)",
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ],
+        "tags": ["Sponsor Module"],
+        "description": "Creates new sponsor. Access - Admin.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success."
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "403": {
+            "description": "Unauthorized."
+          },
+          "500": {
+            "description": "Internal Server Error."
+          }
+        }
+      }
+    },
+    "/sponsor/{id}": {
+      "get": {
+        "summary": "Get sponsor information and associated recruiters",
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ],
+        "tags": ["Sponsor Module"],
+        "description": "Get sponsor information. Access - Admin.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success."
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "403": {
+            "description": "Unauthorized."
+          },
+          "500": {
+            "description": "Internal Server Error."
+          }
+        }
+      }
+    },
+    "/sponsors/": {
+      "get": {
+        "summary": "Get all available sponsor companies",
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ],
+        "tags": ["Sponsor Module"],
+        "description": "Gets all sponsors. Access - Public.",
+        "responses": {
+          "200": {
+            "description": "Success."
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "403": {
+            "description": "Unauthorized."
+          },
+          "500": {
+            "description": "Internal Server Error."
+          }
+        }
+      }
+    },
+    "/team/{teamId}": {
+      "get": {
+        "summary": "Get information about a specific team",
+        "tags": ["Teams Module"],
+        "description": "Get information about a specific team. Access - User",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "teamId",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success."
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "403": {
+            "description": "Unauthorized."
+          },
+          "500": {
+            "description": "Internal Server Error."
+          }
+        }
+      }
+    },
+    "/team/": {
+      "post": {
+        "summary": "Create and join a team",
+        "tags": ["Teams Module"],
+        "description": "Create and join a team. Access - User",
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "description": {
+                    "type": "string"
+                  },
+                  "visible": {
+                    "type": "boolean"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success."
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "403": {
+            "description": "Unauthorized."
+          },
+          "500": {
+            "description": "Internal Server Error."
+          }
+        }
+      },
+      "patch": {
+        "summary": "Update a team's information",
+        "tags": ["Teams Module"],
+        "description": "Update a team's name, description, or visibility. All specified fields will be updated. Access - User, Team Admin",
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "description": {
+                    "type": "string"
+                  },
+                  "visible": {
+                    "type": "boolean"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success."
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "403": {
+            "description": "Unauthorized."
+          },
+          "500": {
+            "description": "Internal Server Error."
+          }
+        }
+      }
+    },
+    "/team/join/{teamId}": {
+      "post": {
+        "summary": "Send a request to join a team",
+        "tags": ["Teams Module"],
+        "description": "Send a request to join a team. Access - User",
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "teamId",
+            "required": true,
+            "type": "string",
+            "description": "The id of the team to join"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success."
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "403": {
+            "description": "Unauthorized."
+          },
+          "500": {
+            "description": "Internal Server Error."
+          }
+        }
+      }
+    },
+    "/team/invite/{userId}": {
+      "post": {
+        "summary": "Invite a user to a team by their ID",
+        "tags": ["Teams Module"],
+        "description": "Invite a user to a team by their ID. Access - User, Team Admin",
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "userId",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success."
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "403": {
+            "description": "Unauthorized."
+          },
+          "500": {
+            "description": "Internal Server Error."
+          }
+        }
+      }
+    },
+    "/team/invite": {
+      "post": {
+        "summary": "Invite a user to a team by their email address",
+        "tags": ["Teams Module"],
+        "description": "Invite a user to a team by their email address. Access - User, Team Admin",
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success."
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "403": {
+            "description": "Unauthorized."
+          },
+          "500": {
+            "description": "Internal Server Error."
+          }
+        }
+      }
+    },
+    "/team/kick/{userId}": {
+      "post": {
+        "summary": "Kick a user from your team",
+        "tags": ["Teams Module"],
+        "description": "Kick a user from your team. Access - User, Team Admin",
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "userId",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success."
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "403": {
+            "description": "Unauthorized."
+          },
+          "500": {
+            "description": "Internal Server Error."
+          }
+        }
+      }
+    },
+    "/team/promote/{userId}": {
+      "post": {
+        "summary": "Promote another member of your team into the admin",
+        "tags": ["Teams Module"],
+        "description": "Promote another member of your team into the admin. This will remove your admin status. Access - User, Team Admin",
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "userId",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success."
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "403": {
+            "description": "Unauthorized."
+          },
+          "500": {
+            "description": "Internal Server Error."
+          }
+        }
+      }
+    },
+    "/team/leave": {
+      "post": {
+        "summary": "Leave your current team",
+        "tags": ["Teams Module"],
+        "description": "Leave your current team. Access - User",
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success."
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "403": {
+            "description": "Unauthorized."
+          },
+          "500": {
+            "description": "Internal Server Error."
+          }
+        }
+      }
+    },
+    "/team/{id}/project": {
+      "get": {
+        "summary": "Get Project by team ID",
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ],
+        "tags": ["Teams Module"],
+        "description": "Get a single project by team ID. Access - User",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "Team ID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success."
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "403": {
+            "description": "Unauthorized."
+          },
+          "500": {
+            "description": "Internal Server Error."
+          }
+        }
+      }
+    },
+    "/teams": {
+      "get": {
+        "summary": "List all existing teams",
+        "tags": ["Teams Module"],
+        "description": "List all existing teams. Access - User",
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success."
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "403": {
+            "description": "Unauthorized."
+          },
+          "500": {
+            "description": "Internal Server Error."
+          }
+        }
+      }
+    },
+    "/teams/search": {
+      "get": {
+        "summary": "Search for a team based on name",
+        "tags": ["Teams Module"],
+        "description": "Search for a team based on name. Access - User",
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "name",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success."
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "403": {
+            "description": "Unauthorized."
+          },
+          "500": {
+            "description": "Internal Server Error."
+          }
+        }
+      }
+    },
+    "/teams/presenting-live": {
+      "get": {
+        "summary": "Get teams that will be presenting live",
+        "tags": ["Teams Module"],
+        "description": "Get list of teams that will be presenting their projects live. Access - Admin",
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success."
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "403": {
+            "description": "Unauthorized."
+          },
+          "500": {
+            "description": "Internal Server Error."
+          }
+        }
+      }
+    },
+    "/test-account": {
+      "post": {
+        "summary": "Create a new short-lived test account",
+        "tags": ["Test Account Module"],
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ],
+        "description": "Create a new test account. Access - Admin",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "status",
+            "description": "The status of the test account to create",
+            "schema": {
+              "type": "string",
+              "required": true,
+              "enum": [
+                "UNVERIFIED",
+                "VERIFIED",
+                "COMPLETED_PROFILE",
+                "ADMITTED",
+                "REJECTED",
+                "CONFIRMED",
+                "DECLINED"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success. Returns the login information for a new test account"
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "500": {
+            "description": "Internal Server Error."
+          }
+        }
+      }
+    },
+    "/test-account/all": {
+      "delete": {
+        "summary": "Delete all test accounts",
+        "tags": ["Test Account Module"],
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ],
+        "description": "Delete all test account. Access - Admin",
+        "responses": {
+          "200": {
+            "description": "Success."
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "500": {
+            "description": "Internal Server Error."
+          }
+        }
+      }
+    },
+    "/test-account/{id}": {
+      "delete": {
+        "summary": "Delete a test account",
+        "tags": ["Test Account Module"],
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ],
+        "description": "Delete a test account. Access - Admin",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success."
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "500": {
+            "description": "Internal Server Error."
+          }
+        }
+      }
+    },
+    "/user/name/available": {
+      "post": {
+        "summary": "Check if a display name is still available",
+        "tags": ["User Module"],
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ],
+        "description": "Check if a display name is still available. Access - User",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "required": true
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success. Returns `true` or `false`"
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "500": {
+            "description": "Internal Server Error."
+          }
+        }
+      }
+    },
+    "/user/profile": {
+      "get": {
+        "summary": "Get current user's application profile",
+        "tags": ["User Module"],
+        "description": "Get current user's application profile. Access - Owner",
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success."
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "403": {
+            "description": "Unauthorized."
+          },
+          "404": {
+            "description": "User does not exist."
+          },
+          "500": {
+            "description": "Internal Server Error."
+          }
+        }
+      },
+      "put": {
+        "summary": "Submit a user application",
+        "tags": ["User Module"],
+        "description": "Submit a user application. Access - User only",
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "displayName": {
+                    "type": "string",
+                    "required": true
+                  },
+                  "firstName": {
+                    "type": "string",
+                    "required": true
+                  },
+                  "lastName": {
+                    "type": "string",
+                    "required": true
+                  },
+                  "age": {
+                    "type": "integer",
+                    "required": true
+                  },
+                  "school": {
+                    "type": "string",
+                    "required": true
+                  },
+                  "college": {
+                    "type": "string",
+                    "enum": [
+                      "SCS",
+                      "CIT",
+                      "CFA",
+                      "Dietrich",
+                      "MCS",
+                      "Tepper",
+                      "Heinz"
+                    ]
+                  },
+                  "level": {
+                    "type": "string",
+                    "enum": ["Undergraduate", "Masters", "Doctorate", "Other"]
+                  },
+                  "graduationYear": {
+                    "type": "integer",
+                    "minimum": 2022,
+                    "maximum": 2027,
+                    "required": true
+                  },
+                  "gender": {
+                    "type": "string",
+                    "enum": ["Male", "Female", "Prefer not to say", "Other"],
+                    "required": true
+                  },
+                  "genderOther": {
+                    "type": "string"
+                  },
+                  "ethnicity": {
+                    "type": "string",
+                    "enum": [
+                      "Native American",
+                      "Asian",
+                      "Black",
+                      "Pacific Islander",
+                      "White",
+                      "Hispanic",
+                      "Other"
+                    ]
+                  },
+                  "ethnicityOther": {
+                    "type": "string"
+                  },
+                  "phoneNumber": {
+                    "type": "string",
+                    "validation": "^(\\+\\d{1,2}\\s)?\\(?\\d{3}\\)?[\\s.-]?\\d{3}[\\s.-]?\\d{4}$"
+                  },
+                  "major": {
+                    "type": "string"
+                  },
+                  "coursework": {
+                    "type": "string"
+                  },
+                  "languages": {
+                    "type": "string"
+                  },
+                  "hackathonExperience": {
+                    "type": "string",
+                    "enum": [0, "0-3", "4+"]
+                  },
+                  "workPermission": {
+                    "type": "string",
+                    "enum": ["Citizen", "Sponsorship", "No sponsorship"]
+                  },
+                  "workLocation": {
+                    "type": "string"
+                  },
+                  "workStrengths": {
+                    "type": "string"
+                  },
+                  "sponsorRanking": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "github": {
+                    "type": "string",
+                    "required": true
+                  },
+                  "design": {
+                    "type": "string"
+                  },
+                  "website": {
+                    "type": "string"
+                  },
+                  "essays": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "dietaryRestrictions": {
+                    "type": "string"
+                  },
+                  "shirtSize": {
+                    "type": "string",
+                    "enum": [
+                      "XS",
+                      "S",
+                      "M",
+                      "L",
+                      "XL",
+                      "XXL",
+                      "WXS",
+                      "WS",
+                      "WM",
+                      "WL",
+                      "WXL",
+                      "WXXL"
+                    ]
+                  },
+                  "wantsHardware": {
+                    "type": "boolean"
+                  },
+                  "address": {
+                    "type": "string"
+                  },
+                  "region": {
+                    "type": "string,",
+                    "enum": ["Rural", "Suburban", "Urban"]
+                  },
+                  "attendingPhysically": {
+                    "type": "boolean"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success."
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "403": {
+            "description": "Unauthorized."
+          },
+          "404": {
+            "description": "User does not exist."
+          },
+          "500": {
+            "description": "Internal Server Error."
+          }
+        }
+      }
+    },
+    "/user/team": {
+      "get": {
+        "summary": "Get the current user's team",
+        "tags": ["User Module"],
+        "description": "Get the current user's team. Access - User",
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success."
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "403": {
+            "description": "Unauthorized."
+          },
+          "500": {
+            "description": "Internal Server Error."
+          }
+        }
+      }
+    },
+    "/user/resume": {
+      "post": {
+        "summary": "Submit a user's resume",
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ],
+        "tags": ["User Module"],
+        "description": "Submit a user's resume. Must have an associated profile. Access - User",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "file": {
+                    "type": "string",
+                    "format": "binary"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success."
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "403": {
+            "description": "Unauthorized."
+          },
+          "500": {
+            "description": "Internal Server Error."
+          }
+        }
+      }
+    },
+    "/user/profile-picture": {
+      "post": {
+        "summary": "Submit a profile picture",
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ],
+        "tags": ["User Module"],
+        "description": "Submit a profile picture for the current user. Must have an associated profile. Access - User",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "file": {
+                    "type": "string",
+                    "format": "binary"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success."
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "403": {
+            "description": "Unauthorized."
+          },
+          "500": {
+            "description": "Internal Server Error."
+          }
+        }
+      },
+      "delete": {
+        "summary": "Clear the user's profile picture",
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ],
+        "tags": ["User Module"],
+        "description": "Clear the profile picture for the current user. Must have an associated profile. Access - User",
+        "responses": {
+          "200": {
+            "description": "Success."
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "403": {
+            "description": "Unauthorized."
+          },
+          "500": {
+            "description": "Internal Server Error."
+          }
+        }
+      }
+    },
+    "/user/confirmation": {
+      "put": {
+        "summary": "Submit a user's confirmation",
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ],
+        "tags": ["User Module"],
+        "description": "Submit a user's confirmation. Must have been accepted. Access - User",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "signatureLiability": {
+                    "type": "boolean"
+                  },
+                  "signatureCodeOfConduct": {
+                    "type": "boolean"
+                  },
+                  "willMentor": {
+                    "type": "boolean"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success."
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "403": {
+            "description": "Unauthorized."
+          },
+          "500": {
+            "description": "Internal Server Error."
+          }
+        }
+      }
+    },
+    "/user/decline": {
+      "put": {
+        "summary": "Decline a user's acceptance",
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ],
+        "tags": ["User Module"],
+        "description": "Decline a user's acceptance. Must have been accepted. Access - User",
+        "responses": {
+          "200": {
+            "description": "Success."
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "403": {
+            "description": "Unauthorized."
+          },
+          "500": {
+            "description": "Internal Server Error."
+          }
+        }
+      }
+    },
+    "/user/verification": {
+      "get": {
+        "summary": "Get a user's verification code.",
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ],
+        "tags": ["User Module"],
+        "description": "Get a user's verification code. If it does not exist or is expired, generate a new one. Access - User",
+        "responses": {
+          "200": {
+            "description": "Success."
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "403": {
+            "description": "Unauthorized."
+          },
+          "500": {
+            "description": "Internal Server Error."
+          }
+        }
+      }
+    },
+    "/user/set-status": {
+      "put": {
+        "summary": "Set a user's status",
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ],
+        "tags": ["User Module"],
+        "description": "Set the status of a user. Access - Admin.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string"
+                  },
+                  "status": {
+                    "type": "string",
+                    "enum": [
+                      "UNVERIFIED",
+                      "VERIFIED",
+                      "COMPLETED_PROFILE",
+                      "ADMITTED",
+                      "REJECTED",
+                      "CONFIRMED",
+                      "DECLINED"
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success."
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "403": {
+            "description": "Unauthorized."
+          },
+          "500": {
+            "description": "Internal Server Error."
+          }
+        }
+      }
+    },
+    "/users": {
+      "get": {
+        "summary": "Query list of users",
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ],
+        "tags": ["Users Module"],
+        "description": "Retrieves list of all users in the database. Access - Admin",
+        "responses": {
+          "200": {
+            "description": "Success."
+          },
+          "403": {
+            "description": "Forbidden."
+          },
+          "500": {
+            "description": "Internal Server Error."
+          }
+        }
+      }
+    },
+    "/users/{id}": {
+      "get": {
+        "summary": "Query user by user ID",
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ],
+        "tags": ["Users Module"],
+        "description": "Retrieves user info by user ID, Access - Admin or Owner",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success."
+          },
+          "403": {
+            "description": "Forbidden."
+          },
+          "500": {
+            "description": "Internal Server Error."
+          }
+        }
+      }
+    },
+    "/users/{id}/resume": {
+      "get": {
+        "summary": "Get a user's resume",
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ],
+        "tags": ["Users Module"],
+        "description": "Get a user's resume. Must have an associated profile. Access - User",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "302": {
+            "description": "Redirect."
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "403": {
+            "description": "Unauthorized."
+          },
+          "500": {
+            "description": "Internal Server Error."
+          }
+        }
+      }
+    },
+    "/users/{id}/profile": {
+      "get": {
+        "summary": "Get a user's application profile",
+        "tags": ["Users Module"],
+        "description": "Get a user's application profile. Access - Owner, Recruiter, or Admin only",
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success."
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "403": {
+            "description": "Unauthorized."
+          },
+          "404": {
+            "description": "User does not exist."
+          },
+          "500": {
+            "description": "Internal Server Error."
+          }
+        }
+      }
+    },
+    "/users/{id}/admit": {
+      "post": {
+        "summary": "Admit user by ID",
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ],
+        "tags": ["Users Module"],
+        "description": "Admit user by ID, Access - Admin",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success."
+          },
+          "403": {
+            "description": "Forbidden."
+          },
+          "404": {
+            "description": "User not found."
+          },
+          "500": {
+            "description": "Internal Server Error."
+          }
+        }
+      }
+    },
+    "/users/{id}/reject": {
+      "post": {
+        "summary": "Reject user by ID",
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ],
+        "tags": ["Users Module"],
+        "description": "Reject user by ID, Access - Admin",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success."
+          },
+          "403": {
+            "description": "Forbidden."
+          },
+          "404": {
+            "description": "User not found."
+          },
+          "500": {
+            "description": "Internal Server Error."
+          }
+        }
+      }
+    },
+    "/users/{id}/team": {
+      "get": {
+        "summary": "Get a user's team",
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ],
+        "tags": ["Users Module"],
+        "description": "Get a user's team, Access - Admin, Recruiter or Owner",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success."
+          },
+          "400": {
+            "description": "User does not have a team"
+          },
+          "403": {
+            "description": "Forbidden."
+          },
+          "404": {
+            "description": "User not found."
+          },
+          "500": {
+            "description": "Internal Server Error."
+          }
+        }
+      }
+    },
+    "/users/{id}/project": {
+      "get": {
+        "summary": "Get a user's project",
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ],
+        "tags": ["Users Module"],
+        "description": "Get a single project by user ID. Access - User",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "user ID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success."
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "403": {
+            "description": "Unauthorized."
+          },
+          "500": {
+            "description": "Internal Server Error."
+          }
+        }
+      }
+    },
+    "/users/admit/all": {
+      "post": {
+        "summary": "Admit all users with completed profiles that have not been accepted/rejected yet",
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ],
+        "tags": ["Users Module"],
+        "description": "Admit users with completed profiles that have not been accepted/rejected yet, Access - Admin",
+        "responses": {
+          "200": {
+            "description": "Success."
+          },
+          "403": {
+            "description": "Forbidden."
+          },
+          "404": {
+            "description": "User not found."
+          },
+          "500": {
+            "description": "Internal Server Error."
+          }
+        }
+      }
+    },
+    "/users/admit/cmu": {
+      "post": {
+        "summary": "Admit all users from CMU with completed profiles that have not been accepted/rejected yet",
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ],
+        "tags": ["Users Module"],
+        "description": "Admit users from CMU with completed profiles that have not been accepted/rejected yet, Access - Admin",
+        "responses": {
+          "200": {
+            "description": "Success."
+          },
+          "403": {
+            "description": "Forbidden."
+          },
+          "404": {
+            "description": "User not found."
+          },
+          "500": {
+            "description": "Internal Server Error."
+          }
+        }
+      }
+    },
+    "/users/reject/all": {
+      "post": {
+        "summary": "Reject all users with completed profiles that have not been admitted/rejected yet",
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ],
+        "tags": ["Users Module"],
+        "description": "Reject users with completed profiles that have not been admitted/rejected yet, Access - Admin",
+        "responses": {
+          "200": {
+            "description": "Success."
+          },
+          "403": {
+            "description": "Forbidden."
+          },
+          "404": {
+            "description": "User not found."
+          },
+          "500": {
+            "description": "Internal Server Error."
+          }
+        }
+      }
+    }
+  },
+  "tags": [
+    {
+      "name": "Admin Module",
+      "description": "Endpoints for admin control. Access - Admin only"
+    },
+    {
+      "name": "Analytics Module",
+      "description": "Endpoints for user analytics. Access - Admin only"
+    },
+    {
+      "name": "Authentication Module",
+      "description": "Endpoints to manage user authentication."
+    },
+    {
+      "name": "Bookmark Module",
+      "description": "Endpoints to bookmarks"
+    },
+    {
+      "name": "Check In Module",
+      "description": "Endpoints to manage check in items and histories."
+    },
+    {
+      "name": "Judge Module",
+      "description": "Endpoints for judge management. Access - Admin only"
+    },
+    {
+      "name": "Leaderboard Module",
+      "description": "Endpoints to manage and interact with the leaderboard"
+    },
+    {
+      "name": "Participants Module",
+      "description": "Endpoints to manage participant users."
+    },
+    {
+      "name": "Prizes Module",
+      "description": "Endpoints to manage prizes."
+    },
+    {
+      "name": "Projects Module",
+      "description": "Endpoints to manage dynamic projects."
+    },
+    {
+      "name": "Recruiter Module",
+      "description": "Endpoints to manage recruiters (user representatives of sponsors)"
+    },
+    {
+      "name": "Team Requests Module",
+      "description": "Endpoints for team request management. Access - User"
+    },
+    {
+      "name": "Schedule Module",
+      "description": "Endpoints to manage dynamic event schedules."
+    },
+    {
+      "name": "Settings Module",
+      "description": "Endpoints for settings control. Access - Admin only"
+    },
+    {
+      "name": "Sponsor Module",
+      "description": "Endpoints to manage sponsor creation and retrieving"
+    },
+    {
+      "name": "Teams Module",
+      "description": "Endpoints for team management. Access - User"
+    },
+    {
+      "name": "Test Account Module",
+      "description": "Endpoints for creating and managing short-lived test accounts. Access - Admin only"
+    },
+    {
+      "name": "User Module",
+      "description": "Endpoints for personal user control. Access - User only"
+    },
+    {
+      "name": "Users Module",
+      "description": "Endpoints to manage users."
+    }
+  ]
+}
