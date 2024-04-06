@@ -21,7 +21,6 @@ export const postRouter = createTRPCRouter({
       //   .select()
       //   .from(schema.post)
       //   .where(eq(schema.post.id, input.id));
-
       return ctx.db.query.post.findFirst({
         where: eq(schema.post.id, input.id),
       });
